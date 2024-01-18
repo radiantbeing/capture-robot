@@ -1,0 +1,22 @@
+{
+  "name": "capture-robot",
+  "version": "1.0.0",
+  "description": "Robot that automatically capture every certain period of time.",
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc --build",
+    "clean": "tsc --build --clean",
+    "start": "cd ./dist && node index.js"
+  },
+  "author": "radiantbeing",
+  "license": "MIT",
+  "dependencies": {
+    "@inquirer/prompts": "^3.3.0",
+    "chalk": "^4.1.2",
+    "robotjs": "^0.6.0",
+    "screenshot-desktop": "^1.15.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.3.3"
+  }
+}
