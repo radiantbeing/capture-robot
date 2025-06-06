@@ -1,7 +1,7 @@
 {
     "name": "capture-robot",
-    "version": "0.0.1",
-    "description": "일정 주기로 화면을 캡처하고 키 입력을 반복 실행하는 캡처 자동화 도구입니다.",
+    "version": "0.0.2",
+    "description": "일정 주기로 화면을 캡처하고 키 입력을 반복 실행하는 캡처 자동화 도구",
     "main": "index.js",
     "type": "module",
     "scripts": {
