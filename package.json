@@ -1,22 +1,21 @@
 {
-  "name": "capture-robot",
-  "version": "1.0.0",
-  "description": "Robot that automatically capture every certain period of time.",
-  "main": "index.js",
-  "scripts": {
-    "build": "tsc --build",
-    "clean": "tsc --build --clean",
-    "start": "cd ./dist && node index.js"
-  },
-  "author": "radiantbeing",
-  "license": "MIT",
-  "dependencies": {
-    "@inquirer/prompts": "^3.3.0",
-    "chalk": "^4.1.2",
-    "robotjs": "^0.6.0",
-    "screenshot-desktop": "^1.15.0"
-  },
-  "devDependencies": {
-    "typescript": "^5.3.3"
-  }
+    "name": "capture-robot",
+    "version": "0.0.1",
+    "description": "일정 주기로 화면을 캡처하고 키 입력을 반복 실행하는 캡처 자동화 도구입니다.",
+    "main": "index.js",
+    "type": "module",
+    "scripts": {
+        "start": "node index.js",
+        "lint": "find . -name '*.js' -not -path './node_modules/*' -exec node jslint.mjs {} \\;"
+    },
+    "bin": {
+        "capture-robot": "./index.js"
+    },
+    "author": "김인화 <inhwa.kim@outlook.com>",
+    "license": "MIT",
+    "dependencies": {
+        "@inquirer/prompts": "^7.5.3",
+        "robotjs": "^0.6.0",
+        "screenshot-desktop": "^1.15.1"
+    }
 }
