@@ -5,11 +5,11 @@
     "main": "index.js",
     "type": "module",
     "scripts": {
-        "start": "node index.js",
+        "start": "node ./bin/cli.js",
         "lint": "find . -name '*.js' -not -path './node_modules/*' -exec node jslint.mjs {} \\;"
     },
     "bin": {
-        "capture-robot": "./index.js"
+        "capture-robot": "./bin/cli.js"
     },
     "author": "김인화 <inhwa.kim@outlook.com>",
     "license": "MIT",
