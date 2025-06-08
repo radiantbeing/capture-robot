@@ -6,7 +6,7 @@
     "type": "module",
     "scripts": {
         "start": "node ./bin/cli.js",
-        "lint": "find . -name '*.js' -not -path './node_modules/*' -exec node jslint.mjs {} \\;"
+        "lint": "JSLINT=$(which jslint | xargs realpath) && find . \\( -name '*.js' -o -name '*.cjs' -o -name '*.mjs' \\) -not -path './node_modules/*' -print0 | while IFS= read -r -d '' file; do node \"$JSLINT\" \"$file\"; done"
     },
     "bin": {
         "capture-robot": "./bin/cli.js"
@@ -17,5 +17,8 @@
         "@inquirer/prompts": "^7.5.3",
         "robotjs": "^0.6.0",
         "screenshot-desktop": "^1.15.1"
+    },
+    "devDependencies": {
+        "@jslint-org/jslint": "^2025.3.31"
     }
 }
