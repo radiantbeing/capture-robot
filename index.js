@@ -1,14 +1,10 @@
 /*jslint node*/
 import fs from "node:fs";
 import path from "node:path";
-import {fileURLToPath} from "node:url";
 import robot from "robotjs";
 import screenshot from "screenshot-desktop";
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-
-function createCaptureRobot() {
+function createCaptureRobot(config) {
 
 // 클로저 기반의 캡처 자동화 로봇 객체를 생성합니다.
 
@@ -16,11 +12,9 @@ function createCaptureRobot() {
     let totalCaptures = 0;
     let captureIntervalMs = 500;
     let autoPressKey = "right";
-    let outputPath = path.join(__dirname, "output");
+    let outputPath = path.resolve("./output");
 
-    async function listDisplays() {
-        return await screenshot.listDisplays();
-    }
+    defineConfig(config);
 
     function defineConfig(config) {
         displayId = config.displayId ?? displayId;
@@ -30,7 +24,11 @@ function createCaptureRobot() {
         outputPath = config.outputPath ?? outputPath;
     }
 
-    async function initializeDirectory(directoryPath) {
+    async function listDisplays() {
+        return await screenshot.listDisplays();
+    }
+
+    async function initializeDirectory(directoryPath = outputPath) {
 
 // 캡처된 이미지를 저장할 출력 디렉터리를 초기화합니다.
 
@@ -58,34 +56,20 @@ function createCaptureRobot() {
         return new Promise((resolve) => setTimeout(resolve, delay));
     }
 
-    async function prepareCapture() {
-        await initializeDirectory(outputPath);
-    }
-
-    async function startCapture({
-        onAllCaptureComplete,
-        onEachCaptureComplete,
-        onPrepareComplete
-    }) {
-        const validKeys = new Set(["right", "left", "space"]);
-
-        await prepareCapture();
-        if (typeof onPrepareComplete === "function") {
-            await onPrepareComplete();
-        }
-
-        let captureNo = 1;
-        while (captureNo <= totalCaptures) {
+    async function startCapture(callback) {
+        let captureNr = 1;
+        while (captureNr <= totalCaptures) {
             const imageBuffer = await screenshot({
                 format: "jpg",
                 screen: displayId
             });
             await saveImage(
-                path.join(outputPath, `${captureNo}.jpg`),
+                path.join(outputPath, `${captureNr}.jpg`),
                 imageBuffer
             );
-            if (captureNo < totalCaptures) {
-                if (validKeys.has(autoPressKey)) {
+            if (captureNr < totalCaptures) {
+                const validKeys = ["right", "left", "space"];
+                if (validKeys.includes(autoPressKey)) {
 
 // autoPressKey 매개변수로 전달된 키를 robotjs가 입력합니다. robotjs가 입력할 수 있는 키 목록 중 일부만을 허용하며
 // 매개변수로 전달된 키가 유효하지 않은 경우 아무 작업도 수행하지 않습니다.
@@ -94,19 +78,16 @@ function createCaptureRobot() {
                 }
                 await sleep(captureIntervalMs);
             }
-            if (typeof onEachCaptureComplete === "function") {
-                await onEachCaptureComplete(captureNo);
+            if (typeof callback === "function") {
+                await callback(captureNr);
             }
-            captureNo += 1;
-        }
-
-        if (typeof onAllCaptureComplete === "function") {
-            await onAllCaptureComplete();
+            captureNr += 1;
         }
     }
 
     return {
         defineConfig,
+        initializeDirectory,
         listDisplays,
         sleep,
         startCapture
