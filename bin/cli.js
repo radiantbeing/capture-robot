@@ -3,6 +3,7 @@
 import path from "node:path";
 import {input, select} from "@inquirer/prompts";
 import captureRobot from "../index.js";
+import pause from "../src/pause.js";
 
 async function repeat(generator) {
     const result = await generator();
@@ -47,7 +48,7 @@ async function cli() {
 
     const startDelayMs = 5000;
     console.log(`⏳ ${startDelayMs / 1000}초 뒤 캡처가 시작됩니다.`);
-    await captureRobot.pause(startDelayMs);
+    await pause(startDelayMs);
 
     const capture = await captureRobot({
         autoPressKey,
