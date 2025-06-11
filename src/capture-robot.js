@@ -4,22 +4,7 @@ import path from "node:path";
 import robot from "robotjs";
 import screenshot from "screenshot-desktop";
 import pause from "./pause.js";
-
-async function initializeDirectory(directoryPath) {
-
-// `directoryPath` 매개변수로 전달된 경로에 디렉터리를 생성합니다. 이미 디렉터리가 존재하면 디렉터리의 컨텐츠를 모두 삭제합니다.
-
-    await fs.promises.mkdir(directoryPath, {recursive: true});
-
-// fs.promises.mkdir 메서드의 두 번째 매개변수에 전달된 옵션 객체의 recursive 프로퍼티가 true로 설정되어 있어
-// 디렉터리가 이미 존재하는 경우에도 예외가 발생하지 않습니다. 따라서 디렉터리 내에 이미 존재할 수 있는 컨텐츠를 식별하여 삭제합니다.
-
-    const contents = await fs.promises.readdir(directoryPath);
-    contents.forEach(async function (content) {
-        const contentPath = path.join(directoryPath, content);
-        await fs.promises.rm(contentPath, {recursive: true});
-    });
-}
+import {isDirectoryEmpty} from "./filesys.js";
 
 async function listDisplays() {
     return await screenshot.listDisplays();
@@ -38,10 +23,16 @@ async function captureRobotFactory(config) {
     const autoPressKey = config.autoPressKey ?? undefined;
     const outputPath = config.outputPath ?? path.resolve("./output");
 
+// 디렉터리에 콘텐츠가 존재하면 콘텐츠 보호를 위해 명시적으로 에러를 던집니다. 출력 디렉터리의 초기화 책임을 모듈 사용자에게 부여합니다.
+
+    if (!(await isDirectoryEmpty(outputPath))) {
+        const error = new Error(`${outputPath} 디렉터리가 비어있지 않습니다.`);
+        error.evidence = outputPath;
+        throw error;
+    }
+
     const validKeys = ["right", "left", "space"];
     let captureNr = 0;
-
-    await initializeDirectory(outputPath);
 
     return async function capture() {
         const extension = "jpg";
