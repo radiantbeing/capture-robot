@@ -2,7 +2,7 @@
 /*jslint node*/
 import path from "node:path";
 import {input, select} from "@inquirer/prompts";
-import createCaptureRobot from "../index.js";
+import captureRobot from "../index.js";
 
 async function cli() {
     let displayId;
@@ -11,7 +11,6 @@ async function cli() {
     let autoPressKey;
     let outputPath;
     const startDelayMs = 5000;
-    const captureRobot = createCaptureRobot();
 
     displayId = await select({
         choices: (await captureRobot.listDisplays()).map((display) => ({
@@ -39,17 +38,18 @@ async function cli() {
         message: "캡처 이미지 저장 경로 (경로 내 파일은 모두 삭제됨)"
     });
 
-    captureRobot.defineConfig({
+    console.log(`⏳ ${startDelayMs / 1000}초 뒤 캡처가 시작됩니다.`);
+    await captureRobot.pause(startDelayMs);
+
+    const captureRobotInstance = captureRobot({
         autoPressKey,
         captureIntervalMs,
         displayId,
         outputPath,
         totalCaptures
     });
-    console.log(`⏳ ${startDelayMs / 1000}초 뒤 캡처가 시작됩니다.`);
-    await captureRobot.sleep(startDelayMs);
-    await captureRobot.initializeDirectory();
-    await captureRobot.startCapture(function (captureNo) {
+    await captureRobotInstance.initializeOutputDirectory();
+    await captureRobotInstance.startCapture(function (captureNo) {
         console.log(`[${captureNo}] 캡처 완료`);
     });
     console.log("✅ 모든 캡처가 완료되었습니다.");
