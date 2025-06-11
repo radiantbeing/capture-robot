@@ -20,10 +20,6 @@ async function initializeDirectory(directoryPath) {
     });
 }
 
-async function save(filePath, buffer) {
-    await fs.promises.writeFile(filePath, buffer);
-}
-
 function pause(ms) {
     return new Promise((resolve) => setTimeout(resolve, ms));
 }
@@ -36,63 +32,50 @@ function pressKey(key) {
     robot.keyTap(key);
 }
 
-const validKeys = ["right", "left", "space"];
+// 상태 유지형 함수는 `captureRobotFactory` 함수 내에서 정의합니다.
 
-// 상태 유지형 함수는 `captureRobotConstructor` 함수 내에서 정의합니다.
-
-function captureRobotConstructor(config) {
+async function captureRobotFactory(config) {
     const displayId = config.displayId ?? 0;
     const totalCaptures = config.totalCaptures ?? 0;
-    const captureIntervalMs = config.captureIntervalMs ?? 500;
+    const captureIntervalMs = config.captureIntervalMs ?? 0;
     const autoPressKey = config.autoPressKey ?? undefined;
     const outputPath = config.outputPath ?? path.resolve("./output");
 
-    async function initializeOutputDirectory() {
-        await initializeDirectory(outputPath);
-    }
+    const validKeys = ["right", "left", "space"];
+    let captureNr = 0;
 
-    async function startCapture(callback) {
-        let captureNr = 1;
-        while (captureNr <= totalCaptures) {
-            const imageBuffer = await screenshot({
-                format: "jpg",
-                screen: displayId
-            });
-            await save(
-                path.join(outputPath, `${captureNr}.jpg`),
-                imageBuffer
-            );
-            if (captureNr < totalCaptures) {
-                if (validKeys.includes(autoPressKey)) {
+    await initializeDirectory(outputPath);
 
-// autoPressKey 매개변수로 전달된 키를 robotjs가 입력합니다. robotjs가 입력할 수 있는 키 목록 중 일부만을 허용하며
-// 매개변수로 전달된 키가 유효하지 않은 경우 아무 작업도 수행하지 않습니다.
-
-                    pressKey(autoPressKey);
-                }
-                await pause(captureIntervalMs);
-            }
-            if (typeof callback === "function") {
-                await callback(captureNr);
-            }
-            captureNr += 1;
+    return async function capture() {
+        const extension = "jpg";
+        const filename = `${captureNr}.${extension}`;
+        const filepath = path.join(outputPath, filename);
+        const shouldCapture = captureNr < totalCaptures;
+        const isLastCapture = captureNr === totalCaptures - 1;
+        if (!shouldCapture) {
+            return;
         }
-    }
-
-    return {
-
-// 외부로 노출되는 중첩 함수를 반환합니다. `captureRobotConstructor` 함수 호출에 의해 인스턴스가 만들어진 이후
-// 호출할 수 있습니다.
-
-        initializeOutputDirectory,
-        startCapture
+        const buffer = await screenshot({format: extension, screen: displayId});
+        await fs.promises.writeFile(filepath, buffer);
+        if (!isLastCapture) {
+            if (validKeys.includes(autoPressKey)) {
+                pressKey(autoPressKey);
+            }
+            await pause(captureIntervalMs);
+        }
+        captureNr += 1;
+        return {
+            filename,
+            index: captureNr - 1,
+            path: filepath
+        };
     };
 }
 
-export default Object.freeze(Object.assign(captureRobotConstructor, {
+export default Object.freeze(Object.assign(captureRobotFactory, {
 
-// 상태 비저장형 함수는 `Object.assign` 메서드에 의해 `captureRobotConstructor`에 포함됩니다.
-// 이들은 정적 메서드로서 `captureRobotConstructor` 함수 호출에 의해 인스턴스를 생성하기 전에도 호출할 수 있습니다.
+// 상태 비저장형 함수는 `Object.assign` 메서드에 의해 `captureRobotFactory`에 포함됩니다.
+// 이들은 정적 메서드로서 `captureRobotFactory` 함수 호출에 의해 인스턴스를 생성하기 전에도 호출할 수 있습니다.
 
     listDisplays,
     pause
