@@ -6,7 +6,8 @@
     "type": "module",
     "scripts": {
         "start": "node ./bin/cli.js",
-        "lint": "JSLINT=$(which jslint | xargs realpath) && find . \\( -name '*.js' -o -name '*.cjs' -o -name '*.mjs' \\) -not -path './node_modules/*' -print0 | while IFS= read -r -d '' file; do node \"$JSLINT\" \"$file\"; done"
+        "lint:jslint": "JSLINT=$(which jslint | xargs realpath) && find . \\( -name '*.js' -o -name '*.cjs' -o -name '*.mjs' \\) -not -path './node_modules/*' -print0 | while IFS= read -r -d '' file; do node \"$JSLINT\" \"$file\"; done",
+        "lint:eslint": "eslint ."
     },
     "bin": {
         "capture-robot": "./bin/cli.js"
@@ -19,6 +20,10 @@
         "screenshot-desktop": "^1.15.1"
     },
     "devDependencies": {
-        "@jslint-org/jslint": "^2025.3.31"
+        "@eslint/js": "^9.28.0",
+        "@jslint-org/jslint": "^2025.3.31",
+        "@stylistic/eslint-plugin": "^4.4.1",
+        "eslint": "^9.28.0",
+        "globals": "^16.2.0"
     }
 }

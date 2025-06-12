@@ -1,10 +1,10 @@
 /*jslint node*/
 import fs from "node:fs";
+import {isDirectoryEmpty} from "./filesys.js";
 import path from "node:path";
+import pause from "./pause.js";
 import robot from "robotjs";
 import screenshot from "screenshot-desktop";
-import pause from "./pause.js";
-import {isDirectoryEmpty} from "./filesys.js";
 
 async function listDisplays() {
     return await screenshot.listDisplays();

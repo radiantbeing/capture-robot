@@ -1,14 +1,14 @@
 #!/usr/bin/env node
 /*jslint node*/
-import path from "node:path";
-import {input, select} from "@inquirer/prompts";
-import captureRobot from "../index.js";
-import pause from "../src/pause.js";
 import {
     clearDirectory,
     createDirectory,
     doesDirectoryExist
 } from "../src/filesys.js";
+import {input, select} from "@inquirer/prompts";
+import captureRobot from "../index.js";
+import path from "node:path";
+import pause from "../src/pause.js";
 
 async function repeat(generator) {
     const result = await generator();
