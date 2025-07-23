@@ -2,28 +2,32 @@
     "name": "capture-robot",
     "version": "0.0.2",
     "description": "일정 주기로 화면을 캡처하고 키 입력을 반복 실행하는 캡처 자동화 도구",
-    "main": "index.js",
+    "license": "MIT",
+    "author": "김인화 <inhwa.kim@outlook.com>",
     "type": "module",
-    "scripts": {
-        "start": "node ./bin/cli.js",
-        "lint:jslint": "JSLINT=$(which jslint | xargs realpath) && find . \\( -name '*.js' -o -name '*.cjs' -o -name '*.mjs' \\) -not -path './node_modules/*' -print0 | while IFS= read -r -d '' file; do node \"$JSLINT\" \"$file\"; done",
-        "lint:eslint": "eslint ."
-    },
+    "main": "index.js",
     "bin": {
         "capture-robot": "./bin/cli.js"
     },
-    "author": "김인화 <inhwa.kim@outlook.com>",
-    "license": "MIT",
+    "scripts": {
+        "lint": "eslint .",
+        "start": "node ./bin/cli.js"
+    },
     "dependencies": {
         "@inquirer/prompts": "^7.5.3",
         "robotjs": "^0.6.0",
         "screenshot-desktop": "^1.15.1"
     },
     "devDependencies": {
-        "@jslint-org/jslint": "^2025.3.31",
-        "@radiantbeing/eslint-config": "^0.0.5",
-        "eslint": "^9.28.0",
-        "globals": "^16.2.0"
+        "@eslint/js": "^9.31.0",
+        "@types/node": "^22.16.5",
+        "eslint": "^9.31.0",
+        "eslint-config-prettier": "^10.1.8",
+        "globals": "^16.3.0",
+        "jiti": "^2.4.2",
+        "prettier": "^3.6.2",
+        "typescript": "^5.8.3",
+        "typescript-eslint": "^8.38.0"
     },
     "volta": {
         "node": "22.17.1"

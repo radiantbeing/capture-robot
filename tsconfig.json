@@ -1,0 +1,12 @@
+{
+    "compilerOptions": {
+        "esModuleInterop": true,
+        "lib": ["ES2020"],
+        "module": "Node16",
+        "moduleResolution": "node16",
+        "skipLibCheck": true,
+        "strict": true,
+        "target": "ES2020",
+        "verbatimModuleSyntax": true
+    }
+}
