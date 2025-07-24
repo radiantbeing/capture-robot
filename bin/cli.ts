@@ -55,7 +55,7 @@ const program = new Command();
 program
     .name("capture-robot")
     .description("Capture Robot - Screenshot capture automation tool")
-    .version("0.0.3");
+    .version("0.0.5");
 
 // 인식된 모니터 목록을 조회하는 명령어를 등록합니다.
 program
