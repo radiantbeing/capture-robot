@@ -5,7 +5,7 @@ node_modules/
 dist/
 
 # 캡처 이미지 저장 디렉터리를 무시합니다.
-output/
+screenshots/
 
 # macOS가 생성한 메타데이터 파일을 무시합니다.
 .DS_Store

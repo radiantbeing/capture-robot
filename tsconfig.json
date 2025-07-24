@@ -1,12 +1,15 @@
 {
     "compilerOptions": {
         "esModuleInterop": true,
-        "lib": ["ES2020"],
+        "lib": ["ES2022"],
         "module": "Node16",
         "moduleResolution": "node16",
+        "outDir": "./dist",
         "skipLibCheck": true,
         "strict": true,
-        "target": "ES2020",
+        "target": "ES2022",
         "verbatimModuleSyntax": true
-    }
+    },
+    "exclude": ["./dist"],
+    "include": ["./src/**/*", "./bin/**/*"]
 }

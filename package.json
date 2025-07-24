@@ -10,13 +10,15 @@
         "capture-robot": "./bin/cli.js"
     },
     "scripts": {
+        "build": "rm -rf ./dist && tsc",
+        "dev": "jiti ./bin/cli.ts",
         "lint": "eslint .",
-        "start": "node ./bin/cli.js"
+        "preview": "node ./dist/bin/cli.js"
     },
     "dependencies": {
-        "@inquirer/prompts": "^7.5.3",
-        "robotjs": "^0.6.0",
-        "screenshot-desktop": "^1.15.1"
+        "commander": "^14.0.0",
+        "node-screenshots": "^0.2.1",
+        "robotjs": "^0.6.0"
     },
     "devDependencies": {
         "@eslint/js": "^9.31.0",
@@ -28,6 +30,9 @@
         "prettier": "^3.6.2",
         "typescript": "^5.8.3",
         "typescript-eslint": "^8.38.0"
+    },
+    "engines": {
+        "node": ">=22.17.1"
     },
     "volta": {
         "node": "22.17.1"
