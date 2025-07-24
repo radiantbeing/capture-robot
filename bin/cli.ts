@@ -54,18 +54,18 @@ const program = new Command();
 
 program
     .name("capture-robot")
-    .description("Screenshot capture automation tool")
+    .description("screenshot capture automation tool")
     .version("0.0.3");
 
 // 인식된 모니터 목록을 조회하는 명령어를 등록합니다.
 program
     .command("monitors")
-    .description("List available monitors")
+    .description("list available monitors")
     .action(function () {
         console.log(
             "Available monitors:\n" +
                 monitors
-                    .map((m) => `[ID: ${m.id.toString()}] ${m.name}`)
+                    .map((m) => `  [ID: ${m.id.toString()}] ${m.name}`)
                     .join("\n")
         );
     });
@@ -73,32 +73,32 @@ program
 // 캡처를 시작하는 명령어를 등록합니다.
 program
     .command("start")
-    .description("Start screenshot capture")
-    .option("-c, --count <number>", "Number of screenshots to capture", "1")
+    .description("start screenshot capture")
+    .option("-c, --count <number>", "number of screenshots to capture", "1")
     .option(
         "-d, --delay <number>",
-        "Delay before starting capture (ms)",
+        "delay before starting capture (ms)",
         "5000"
     )
     .option(
         "-m, --monitor <number>",
-        "Monitor ID to capture",
+        "monitor ID to capture",
         (CaptureRobot.getPrimaryMonitor()?.id ?? monitors[0].id).toString()
     )
-    .option("-i, --interval <number>", "Interval between captures (ms)", "500")
+    .option("-i, --interval <number>", "interval between captures (ms)", "500")
     .option(
         "-k, --key <key>",
-        `Key to press after each capture. Choices: ${pressableKeys.join(", ")}`,
+        `key to press after each capture. choices: ${pressableKeys.join(", ")}`,
         "right"
     )
     .option(
         "-o, --output <path>",
-        "Output directory for captured screenshots",
+        "output directory for captured screenshots",
         path.join(process.cwd(), "screenshots")
     )
     .option(
         "--overwrite",
-        "Allow overwriting the output directory if it is not empty",
+        "allow overwriting the output directory if it is not empty",
         false
     )
     .action(async (options: CaptureOptions) => {
