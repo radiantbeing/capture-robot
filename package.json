@@ -1,13 +1,14 @@
 {
     "name": "capture-robot",
     "version": "0.0.2",
-    "description": "일정 주기로 화면을 캡처하고 키 입력을 반복 실행하는 캡처 자동화 도구",
+    "description": "Screenshot capture automation CLI tool",
     "license": "MIT",
-    "author": "김인화 <inhwa.kim@outlook.com>",
+    "author": "Inhwa Kim <inhwa.kim@outlook.com>",
     "type": "module",
-    "main": "index.js",
+    "main": "./dist/src/index.js",
+    "types": "./dist/src/index.d.ts",
     "bin": {
-        "capture-robot": "./bin/cli.js"
+        "capture-robot": "./dist/bin/cli.js"
     },
     "scripts": {
         "build": "rm -rf ./dist && tsc",
